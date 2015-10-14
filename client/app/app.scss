@@ -1,0 +1,98 @@
+$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
+$fa-font-path: "/bower_components/font-awesome/fonts";
+
+@import 'stylesheets/bootstrap';
+@import 'font-awesome/scss/font-awesome';
+
+/**
+ * App-wide Styles
+ */
+
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+
+.tp {
+	margin-top: 20px;
+}
+
+// Component styles are injected through grunt
+// injector
+@import 'main/main.scss';
+@import 'stylesheets/_bootstrap-mincer.scss';
+@import 'stylesheets/bootstrap.scss';
+@import 'stylesheets/bootstrap/_alerts.scss';
+@import 'stylesheets/bootstrap/_badges.scss';
+@import 'stylesheets/bootstrap/_breadcrumbs.scss';
+@import 'stylesheets/bootstrap/_button-groups.scss';
+@import 'stylesheets/bootstrap/_buttons.scss';
+@import 'stylesheets/bootstrap/_carousel.scss';
+@import 'stylesheets/bootstrap/_close.scss';
+@import 'stylesheets/bootstrap/_code.scss';
+@import 'stylesheets/bootstrap/_component-animations.scss';
+@import 'stylesheets/bootstrap/_dropdowns.scss';
+@import 'stylesheets/bootstrap/_forms.scss';
+@import 'stylesheets/bootstrap/_glyphicons.scss';
+@import 'stylesheets/bootstrap/_grid.scss';
+@import 'stylesheets/bootstrap/_input-groups.scss';
+@import 'stylesheets/bootstrap/_jumbotron.scss';
+@import 'stylesheets/bootstrap/_labels.scss';
+@import 'stylesheets/bootstrap/_list-group.scss';
+@import 'stylesheets/bootstrap/_media.scss';
+@import 'stylesheets/bootstrap/_mixins.scss';
+@import 'stylesheets/bootstrap/_modals.scss';
+@import 'stylesheets/bootstrap/_navbar.scss';
+@import 'stylesheets/bootstrap/_navs.scss';
+@import 'stylesheets/bootstrap/_normalize.scss';
+@import 'stylesheets/bootstrap/_pager.scss';
+@import 'stylesheets/bootstrap/_pagination.scss';
+@import 'stylesheets/bootstrap/_panels.scss';
+@import 'stylesheets/bootstrap/_popovers.scss';
+@import 'stylesheets/bootstrap/_print.scss';
+@import 'stylesheets/bootstrap/_progress-bars.scss';
+@import 'stylesheets/bootstrap/_responsive-embed.scss';
+@import 'stylesheets/bootstrap/_responsive-utilities.scss';
+@import 'stylesheets/bootstrap/_scaffolding.scss';
+@import 'stylesheets/bootstrap/_tables.scss';
+@import 'stylesheets/bootstrap/_theme.scss';
+@import 'stylesheets/bootstrap/_thumbnails.scss';
+@import 'stylesheets/bootstrap/_tooltip.scss';
+@import 'stylesheets/bootstrap/_type.scss';
+@import 'stylesheets/bootstrap/_utilities.scss';
+@import 'stylesheets/bootstrap/_variables.scss';
+@import 'stylesheets/bootstrap/_wells.scss';
+@import 'stylesheets/bootstrap/bootstrap.scss';
+@import 'stylesheets/bootstrap/mixins/_alerts.scss';
+@import 'stylesheets/bootstrap/mixins/_background-variant.scss';
+@import 'stylesheets/bootstrap/mixins/_border-radius.scss';
+@import 'stylesheets/bootstrap/mixins/_buttons.scss';
+@import 'stylesheets/bootstrap/mixins/_center-block.scss';
+@import 'stylesheets/bootstrap/mixins/_clearfix.scss';
+@import 'stylesheets/bootstrap/mixins/_forms.scss';
+@import 'stylesheets/bootstrap/mixins/_gradients.scss';
+@import 'stylesheets/bootstrap/mixins/_grid-framework.scss';
+@import 'stylesheets/bootstrap/mixins/_grid.scss';
+@import 'stylesheets/bootstrap/mixins/_hide-text.scss';
+@import 'stylesheets/bootstrap/mixins/_image.scss';
+@import 'stylesheets/bootstrap/mixins/_labels.scss';
+@import 'stylesheets/bootstrap/mixins/_list-group.scss';
+@import 'stylesheets/bootstrap/mixins/_nav-divider.scss';
+@import 'stylesheets/bootstrap/mixins/_nav-vertical-align.scss';
+@import 'stylesheets/bootstrap/mixins/_opacity.scss';
+@import 'stylesheets/bootstrap/mixins/_pagination.scss';
+@import 'stylesheets/bootstrap/mixins/_panels.scss';
+@import 'stylesheets/bootstrap/mixins/_progress-bar.scss';
+@import 'stylesheets/bootstrap/mixins/_reset-filter.scss';
+@import 'stylesheets/bootstrap/mixins/_resize.scss';
+@import 'stylesheets/bootstrap/mixins/_responsive-visibility.scss';
+@import 'stylesheets/bootstrap/mixins/_size.scss';
+@import 'stylesheets/bootstrap/mixins/_tab-focus.scss';
+@import 'stylesheets/bootstrap/mixins/_table-row.scss';
+@import 'stylesheets/bootstrap/mixins/_text-emphasis.scss';
+@import 'stylesheets/bootstrap/mixins/_text-overflow.scss';
+@import 'stylesheets/bootstrap/mixins/_vendor-prefixes.scss';
+@import 'modal/modal.scss';
+// endinjector

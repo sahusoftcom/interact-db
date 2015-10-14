@@ -1,0 +1,14 @@
+<div class="panel panel-primary" ng-controller="DetectedConfigCtrl">
+    <div class="panel-heading">
+      <h3 class="panel-title">Detected config</h3>
+    </div>
+    <div class="panel-body">
+
+      <table class="">
+        <tr ng-repeat="(key, val) in config">
+          <td><strong>{{key}}:</strong> {{val}}</td>
+        </tr>
+      </table>
+      
+    </div>
+</div>

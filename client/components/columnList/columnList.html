@@ -1,0 +1,22 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Columns</h3>
+    </div>
+    <div class="panel-body">
+      <div class="list-group">
+        <a href="#" ng-repeat="column in model.columns" class="list-group-item"><i class="fa fa-list"></i> {{column.name}}</a>
+      </div>
+
+      <form class="form-horizontal" ng-submit="addNewColumn()">
+
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Add a new column" ng-model="newColumnName">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
+            </span>
+          </div><!-- /input-group -->
+
+      </form>
+
+    </div>
+</div>  
