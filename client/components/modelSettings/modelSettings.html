@@ -1,0 +1,87 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Model Settings</h3>
+    </div>
+    <div class="panel-body">
+        <div class="list-group">
+          <form class="list-group-item form-inline">
+            Storage engine: &nbsp;&nbsp;&nbsp;
+            <select class="form-control" ng-change="commitChange()" ng-model="InteractDBDataService.models[modelIndex].configuration.engine">
+              <option ng-repeat="engine in engines">{{engine}}</option>
+            </select>
+          </form>
+          <form class="list-group-item form-inline">
+            <input type="checkbox" ng-change="commitChange()" ng-model="InteractDBDataService.models[modelIndex].configuration.softDeletes" />
+            Soft deletes
+            <input type="checkbox" ng-change="commitChange()" ng-model="InteractDBDataService.models[modelIndex].configuration.timestamps" />
+            Timestamps
+          </form>
+          <form class="list-group-item form-inline">
+            Primary key: &nbsp;&nbsp;&nbsp;
+            <select multiple class="form-control" ng-change="commitChange()" ng-model="InteractDBDataService.models[modelIndex].configuration.primaryKey">
+              <option ng-repeat="column in InteractDBDataService.models[modelIndex].columns">{{column.name}}</option>
+            </select> (To add a composite key, select multiple columns)
+          </form>
+          <form class="list-group-item form-inline">
+            Indexes: 
+            <span ng-repeat="index in indexes">
+              {{index}}: 
+              <select multiple class="form-control" ng-change="commitChange()" ng-model="InteractDBDataService.models[modelIndex].configuration.indexes[index]">
+                <option ng-repeat="column in InteractDBDataService.models[modelIndex].columns">{{column.name}}</option>
+              </select>
+            </span>
+          </form>
+          <form class="list-group-item form-inline" ng-submit="addForeignKey()">
+            Foreign keys: 
+            <ul class="list-unstyled">
+              <li ng-repeat="foreignKey in InteractDBDataService.models[modelIndex].configuration.foreignKeys | filter: {hidden:'!true'}">
+                Column 
+                <select class="form-control" ng-change="commitChange()" ng-model="foreignKey.column">
+                  <option ng-repeat="column in InteractDBDataService.models[modelIndex].columns">{{column.name}}</option>
+                </select> references model
+                <select class="form-control" ng-change="commitChange()" ng-model="foreignKey.referenceModel">
+                  <option ng-repeat="model in InteractDBDataService.models">{{model.name}}</option>
+                </select> column
+                <select class="form-control" ng-change="commitChange()" ng-model="foreignKey.referenceColumn">
+                  <option ng-repeat="column in getModel(foreignKey.referenceModel).columns">{{column.name}}</option>
+                </select> 
+                onDelete: 
+                <select class="form-control" ng-model="foreignKey.onDelete">
+                  <option ng-repeat="FKOption in FKOptions">{{FKOption}}</option>
+                </select>
+                OnUpdate: 
+                <select class="form-control" ng-model="foreignKey.onUpdate">
+                  <option ng-repeat="FKOption in FKOptions">{{FKOption}}</option>
+                </select>
+                <span>
+                  <button class="btn btn-danger" ng-click="deleteFK($index)"><i class="fa fa-trash"></i></button>
+                </span>
+              </li>
+            </ul>
+            Add a new foreign key: <br />
+            <select class="form-control" ng-required="true" ng-model="fkColumn">
+              <option value="">--Referring column--</option>
+              <option ng-repeat="column in InteractDBDataService.models[modelIndex].columns">{{column.name}}</option>
+            </select> 
+            <select class="form-control" ng-required="true" ng-model="fkRefModel" ng-options="model.name for model in InteractDBDataService.models">
+              <option value="">--Referred model--</option>
+            </select> 
+            <select class="form-control" ng-required="true" ng-model="fkRefColumn">
+              <option value="">--Referred column--</option>
+              <option ng-repeat="column in fkRefModel.columns">{{column.name}}</option>
+            </select>
+            <select class="form-control" ng-model="onDelete">
+              <option value="">--On Delete--</option>
+              <option ng-repeat="FKOption in FKOptions">{{FKOption}}</option>
+            </select>
+            <select class="form-control" ng-model="onUpdate">
+            <option value="">--On Update--</option>
+              <option ng-repeat="FKOption in FKOptions">{{FKOption}}</option>
+            </select>
+            <span>
+              <button class="btn btn-default" type="submit"><i class="fa fa-plus"></i></button>
+            </span>
+          </form>
+        </div>
+    </div>
+</div>

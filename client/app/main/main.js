@@ -14,5 +14,11 @@ angular.module('interactDbApp')
         templateUrl: 'app/modelView/modelView.html',
         controller: 'ModelViewCtrl'
       });
+      
+    $stateProvider.state('relationships', {
+      url: '/relationships/',
+      templateUrl: 'app/relationships/relationships.html',
+      controller: 'RelationshipsCtrl'
+    });
 
   });

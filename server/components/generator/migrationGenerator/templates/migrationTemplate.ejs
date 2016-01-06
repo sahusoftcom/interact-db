@@ -1,0 +1,48 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class <%= className %> extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        <% if(todo == 'drop'){ %>
+            Schema::dropIfExists('<%= tableName %>');
+        <% } %>
+        
+        <% if(todo == 'create'){ %>
+            <% include newTableTemplate.ejs %>
+        <% } %>
+
+        <% if(todo == 'alter'){ %>
+            <% include alterTableTemplate.ejs %>
+        <% } %>
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        <% if(todo == 'alter'){ %>
+            <% include alterTableReverseTemplate.ejs %>
+        <% } %>
+
+        <% if(todo == 'drop'){ %>
+            <% include newTableTemplate.ejs %>
+        <% } %>
+
+        <% if(todo == 'create'){ %>
+            Schema::dropIfExists('<%= tableName %>');
+        <% } %>
+    }
+}
+?>

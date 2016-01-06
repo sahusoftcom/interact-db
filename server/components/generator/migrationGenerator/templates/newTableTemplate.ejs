@@ -1,0 +1,45 @@
+        Schema::create('<%= tableName %>', function(Blueprint $table) {
+            <% for(var i=0; i<columns.length; i++) { %>
+                    $table-><%= columns[i].dataType %>('<%= columns[i].name %>'<% if(columns[i].length) { %>, <%= columns[i].length %><% } %>)
+                    <% if(columns[i].allowNull) { %>->nullable()<% } %>
+                    <% if(columns[i].unsigned) { %>->unsigned()<% } %>
+                    <% if(columns[i].defaultVal && typeof columns[i].defaultVal == 'string') { %>->default('<%= columns[i].defaultVal %>')<% } %>
+                    <% if(columns[i].defaultVal && typeof columns[i].defaultVal == 'number') { %>->default(<%= columns[i].defaultVal %>)<% } %>;
+            <% } %>
+
+            <% if(configuration.softDeletes) { %>
+                $table->softDeletes();
+            <% } %>
+
+            <% if(configuration.timestamps) { %>
+                $table->timestamps();
+            <% } %>
+
+            $table->engine = '<%= configuration.engine %>';
+
+            <% for(var i=0; i<configuration.indexes.unique.length; i++) { %>
+                $table->unique('<%= configuration.indexes.unique[i] %>');
+            <% } %>
+
+            <% for(var i=0; i<configuration.indexes.index.length; i++) { %>
+                $table->index('<%= configuration.indexes.index[i] %>');
+            <% } %>
+
+            <% if(configuration.primaryKey.length == 1) { %>
+                $table->primary('<%= configuration.primaryKey[0] %>');
+            <% } %>
+
+            <% if(configuration.primaryKey.length > 1) { %>
+                $table->primary([<%- configuration.primaryKey.map(function(pk){return '\''+pk+'\''}) %>]);
+            <% } %>
+
+            <% for(var i=0; i<configuration.foreignKeys.length; i++) { %>
+                $table->foreign('<%= configuration.foreignKeys[i].column %>')->references('<%= configuration.foreignKeys[i].referenceColumn %>')->on('<%= pluralize(configuration.foreignKeys[i].referenceModel).toLowerCase() %>')
+                <% if(configuration.foreignKeys[i].onDelete) { %>
+                    ->onDelete('<%- configuration.foreignKeys[i].onDelete %>')
+                <% } %>
+                <% if(configuration.foreignKeys[i].onUpdate) { %>
+                    ->onUpdate('<%- configuration.foreignKeys[i].onUpdate %>')
+                <% } %>;
+            <% } %>
+        });

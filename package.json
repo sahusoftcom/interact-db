@@ -1,21 +1,25 @@
 {
   "name": "interact-db",
-  "version": "0.0.0",
+  "version": "0.0.11",
   "main": "server/app.js",
   "dependencies": {
-    "express": "~4.9.0",
-    "morgan": "~1.0.0",
-    "body-parser": "~1.5.0",
-    "method-override": "~1.0.0",
-    "serve-favicon": "~2.0.1",
-    "cookie-parser": "~1.0.1",
-    "express-session": "~1.0.2",
-    "errorhandler": "~1.0.0",
-    "compression": "~1.0.1",
-    "lodash": "~2.4.1",
-    "ejs": "~0.8.4",
+    "body-parser": "^1.14.1",
     "composable-middleware": "^0.3.0",
-    "connect-mongo": "^0.8.1"
+    "compression": "~1.0.1",
+    "connect-mongo": "^0.8.1",
+    "cookie-parser": "~1.0.1",
+    "ejs": "^0.8.8",
+    "errorhandler": "~1.0.0",
+    "express": "~4.9.0",
+    "express-session": "~1.0.2",
+    "lodash": "~2.4.1",
+    "method-override": "~1.0.0",
+    "mkdirp": "^0.5.1",
+    "morgan": "~1.0.0",
+    "node-uuid": "^1.4.3",
+    "open": "0.0.5",
+    "pluralize": "^1.2.1",
+    "serve-favicon": "~2.0.1"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
@@ -82,5 +86,8 @@
     "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
-  "private": true
+  "bin": {
+    "interact-db": "./server/app.js"
+  },
+  "preferGlobal": true
 }

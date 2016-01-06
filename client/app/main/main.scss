@@ -26,8 +26,10 @@
     background: darken(#272B30, 30%);
 
     @include gradient-vertical($start-color: $gray-darker, $end-color: darken($gray-darker, 10%));
+}
 
-
+.undo, .redo {
+    float: right;
 }
 
 .footer {

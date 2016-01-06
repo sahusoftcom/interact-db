@@ -1,9 +1,15 @@
-<div ng-include="'components/header/header.html'"></div>
+<interact-header></interact-header>
 <div class="container tp">
 
 	<div>
 		<h1><i class="fa fa-database"></i> {{model.name}}</h1>
+
+
 		<column-list model="model"></column-list>
+		
+		<model-settings model="model"></model-settings>
+		
+
 	</div>
 	
 </div>

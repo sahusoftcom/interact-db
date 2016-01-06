@@ -1,10 +1,11 @@
+#! /usr/bin/env node
 /**
  * Main application file
  */
 
 'use strict';
 
-// Set default node environment to development
+// Set default node environment to production
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var express = require('express');
@@ -18,6 +19,7 @@ require('./routes')(app);
 // Start server
 server.listen(config.port, config.ip, function () {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+  //require('open')('http://' + config.ip + ':' + config.port);
 });
 
 // Expose app

@@ -4,19 +4,64 @@
     </div>
     <div class="panel-body">
       <div class="list-group">
-        <a href="#" ng-repeat="column in model.columns" class="list-group-item"><i class="fa fa-list"></i> {{column.name}}</a>
+        <div href="#" ng-repeat="column in InteractDBDataService.models[modelIndex].columns | filter: {hidden:'!true'}" class="list-group-item">
+          <form class="form-inline">
+            <i class="fa fa-list"></i> <input class="form-control" ng-change="commitChange()" type="text" ng-model="column.name" />
+            <span >
+              <select class="form-control" ng-change="commitChange()" ng-model="column.dataType">
+                <option ng-repeat="type in dataTypes">{{type.name}}</option>
+              </select>
+            </span>
+            <span >
+              <input ng-model="column.allowNull" ng-change="commitChange()" class="form-control" type="checkbox" />
+              Allow null
+            </span>
+            <span ng-show="hasDefault(column.dataType)">
+              <input ng-model="column.defaultVal" ng-change="commitChange()" class="form-control" placeholder="Enter the default value" type="text"/>
+            </span>
+            <span  ng-show="hasLength(column)">
+              <input class="form-control" ng-change="commitChange()" ng-model="column.length" placeholder="Enter the length or size" type="text"/>
+            </span>
+            <span  ng-show="hasUnsigned(column.dataType)">
+              <input class="form-control" ng-change="commitChange()" ng-model="column.unsigned" type="checkbox" />
+              Unsigned
+            </span>
+            <span>
+              <button class="btn btn-danger" ng-click="deleteColumn($index)"><i class="fa fa-trash"></i></button>
+            </span>
+          </form>
+        </div>
       </div>
 
-      <form class="form-horizontal" ng-submit="addNewColumn()">
-
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Add a new column" ng-model="newColumnName">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
+      <form class="form-inline" ng-submit="addNewColumn()">
+            <span>
+              <input type="text" class="form-control" ng-required="true" placeholder="Add a new column" ng-model="newColumnName">
             </span>
-          </div><!-- /input-group -->
+            <span>
+              <select class="form-control" ng-required="true" ng-model="selectedDataType">
+                <option value="">--Select data type--</option>
+                <option ng-repeat="type in dataTypes">{{type.name}}</option>
+              </select>
+            </span>
+            <span>
+              <input ng-model="allowNull" class="form-control" type="checkbox" />
+              Allow null
+            </span>
+            <span ng-show="hasDefault(selectedDataType)">
+              <input ng-model="defaultVal" class="form-control" placeholder="Enter the default value" type="text"/>
+            </span>
+            <span ng-show="hasLength(selectedDataType)">
+              <input class="form-control" ng-model="colLength" placeholder="Enter the length or size" type="text"/>
+            </span>
+            <span ng-show="hasUnsigned(selectedDataType)">
+              <input class="form-control" ng-model="unsigned" type="checkbox" />
+              Unsigned
+            </span>
+            <span>
+              <button class="btn btn-default" type="submit"><i class="fa fa-plus"></i></button>
+            </span>
 
       </form>
 
     </div>
-</div>  
+</div> 

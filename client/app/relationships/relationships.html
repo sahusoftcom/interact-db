@@ -1,0 +1,50 @@
+<interact-header></interact-header>
+<div class="container tp">
+
+	<div>
+		<h1><i class="fa fa-database"></i> Relationships</h1>
+
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Relationships</h3>
+			</div>
+			<div class="panel-body">
+				<div class="list-group">
+					<div ng-repeat="(key, value) in InteractDBDataService.relationships">
+						 
+						<form class="list-group-item form-inline" ng-repeat="relationship in value | filter: {hidden:'!true'}">
+							{{key}}:
+							<select class="form-control" ng-model="relationship.relation" ng-change="commitChange()">
+								<option ng-repeat="rel in relationships">{{rel}}</option>
+							</select>
+							<select class="form-control" ng-model="relationship.withModel" ng-change="commitChange()">
+								<option ng-repeat="model in InteractDBDataService.models">{{model.name}}</option>
+							</select>
+							<span>
+			                  <button class="btn btn-danger" ng-click="deleteRelationship($index, key)"><i class="fa fa-trash"></i></button>
+			                </span>
+						</form>
+						
+					</div>
+					<form class="list-group-item form-inline" ng-submit="addRelationship()">
+						Add new relationship:
+						<select class="form-control" ng-model="model1">
+							<option ng-repeat="model in InteractDBDataService.models">{{model.name}}</option>
+						</select>
+						<select class="form-control" ng-model="relation">
+							<option ng-repeat="relationship in relationships">{{relationship}}</option>
+						</select>
+						<select class="form-control" ng-model="model2">
+							<option ng-repeat="model in InteractDBDataService.models">{{model.name}}</option>
+						</select>
+						<span>
+			              <button class="btn btn-default" type="submit"><i class="fa fa-plus"></i></button>
+			            </span>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+</div>

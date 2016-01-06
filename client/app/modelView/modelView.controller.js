@@ -5,10 +5,6 @@ angular.module('interactDbApp')
     
     $scope.model = InteractDBDataService.models[$stateParams.index];
 
-         
-
-
-
   	//$scope.model = InteractDBDataService.models
 
   });

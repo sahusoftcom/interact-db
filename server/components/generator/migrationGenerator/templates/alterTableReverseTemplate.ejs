@@ -1,0 +1,100 @@
+            <% if(diff.name) { %>
+                Schema::rename('<%= pluralize(diff.name).toLowerCase() %>', '<%= tableName %>');
+            <% } %>
+
+            Schema::table('<%= tableName %>', function(Blueprint $table) {
+                <% for(var i=0; i<indexes.unique.added.length; i++) { %>
+                        $table->dropUnique('<%= tableName %>_<%= indexes.unique.added[i] %>_unique');
+                <% } %>
+
+                <% for(var i=0; i<indexes.index.added.length; i++) { %>
+                        $table->dropIndex('<%= tableName %>_<%= indexes.index.added[i] %>_index');
+                <% } %>
+
+                <% for(var i=0; i<foreignKeys.added.length; i++) { %>
+                        $table->dropForeign('<%= tableName %>_<%= foreignKeys.added[i].column %>_foreign');
+                <% } %>
+
+                <% if(diff.primaryKey) { %>
+                    <% if(diff.primaryKey.length == 1) { %>
+                        $table->dropPrimary('<%= tableName %>_<%= diff.primaryKey[0] %>_index');
+                    <% } %>
+                    <% if(diff.primaryKey.length > 1) { %>
+                        $table->dropPrimary('<%= tableName %>_<%= diff.primaryKey.join("_") %>_index');
+                    <% } %>
+                <% } %>
+
+                <% for(var i=0; i<columns.added.length; i++) { %>
+                    $table->dropColumn('<%= columns.added[i].name %>');
+                <% } %>
+
+                <% for(var i=0; i<columns.removed.length; i++) { %>
+                        $table-><%= columns.removed[i].dataType %>('<%= columns.removed[i].name %>'<% if(columns.removed[i].length) { %>, <%= columns.removed[i].length %><% } %>)
+                        <% if(columns.removed[i].allowNull) { %>->nullable()<% } %>
+                        <% if(columns.removed[i].unsigned) { %>->unsigned()<% } %>
+                        <% if(columns.removed[i].defaultVal && typeof columns.removed[i].defaultVal == 'string') { %>->default('<%= columns.removed[i].defaultVal %>')<% } %>
+                        <% if(columns.removed[i].defaultVal && typeof columns.removed[i].defaultVal == 'number') { %>->default(<%= columns.removed[i].defaultVal %>)<% } %>;
+                <% } %>
+
+                <% for(var i=0; i<columns.updated.length; i++) { %>
+                    <% if(columns.updated[i].diff.name) { %>
+                        $table->renameColumn('<%= columns.updated[i].diff.name %>', '<%= columns.updated[i].oldColumn.name %>');
+                    <% } %>
+
+                    $table-><%= columns.updated[i].oldColumn.dataType %>('<%= columns.updated[i].oldColumn.name %>'
+                    <% if(columns.updated[i].oldColumn.length) { %>, <%= columns.updated[i].oldColumn.length %><% } %>)
+                    <% if(columns.updated[i].oldColumn.allowNull) { %>->nullable()<% } %>
+                    <% if(columns.updated[i].oldColumn.unsigned) { %>->unsigned()<% } %>
+                    <% if(columns.updated[i].oldColumn.defaultVal && typeof columns.updated[i].oldColumn.defaultVal == 'string') { %>->default('<%= columns.updated[i].oldColumn.defaultVal %>')<% } %>
+                    <% if(columns.updated[i].oldColumn.defaultVal && typeof columns.updated[i].oldColumn.defaultVal == 'number') { %>->default(<%= columns.updated[i].oldColumn.defaultVal %>)<% } %>->change();
+                <% } %>
+
+                <% for(var i=0; i<indexes.unique.removed.length; i++) { %>
+                        $table->unique('<%= indexes.unique.removed[i] %>');
+                <% } %>
+
+                <% for(var i=0; i<indexes.index.removed.length; i++) { %>
+                        $table->index('<%= indexes.index.removed[i] %>');
+                <% } %>
+
+                <% for(var i=0; i<foreignKeys.removed.length; i++) { %>
+                    $table->foreign('<%= foreignKeys.removed[i].column %>')->references('<%= foreignKeys.removed[i].referenceColumn %>')->on('<%= pluralize(foreignKeys.removed[i].referenceModel).toLowerCase() %>')
+                    <% if(foreignKeys.removed[i].onDelete) { %>
+                        ->onDelete('<%- foreignKeys.removed[i].onDelete %>')
+                    <% } %>
+                    <% if(foreignKeys.removed[i].onUpdate) { %>
+                        ->onUpdate('<%- foreignKeys.removed[i].onUpdate %>')
+                    <% } %>;
+                <% } %>
+
+                <% if(diff.softDeletes) { %>
+                    $table->dropSoftDeletes();
+                <% } %>
+
+                <% if(diff.softDeletes === false) { %>
+                    $table->softDeletes();
+                <% } %>
+
+                <% if(diff.timestamps) { %>
+                    $table->dropTimestamps();
+                <% } %>
+
+                <% if(diff.timestamps === false) { %>
+                    $table->timestamps();
+                <% } %>
+
+                <% if(diff.engine) { %>
+                    $table->engine = '<%= oldModel.configuration.engine %>';
+                <% } %>
+
+                <% if(diff.primaryKey) { %>
+                    <% if(oldModel.configuration.primaryKey.length == 1) { %>
+                        $table->primary('<%= oldModel.configuration.primaryKey[0] %>');
+                    <% } %>
+                    <% if(oldModel.configuration.primaryKey.length > 1) { %>
+                        $table->primary(<%= oldModel.configuration.primaryKey.map(function(pk){return '\''+pk+'\''}) %>);
+                    <% } %>
+
+                <% } %>
+
+            });

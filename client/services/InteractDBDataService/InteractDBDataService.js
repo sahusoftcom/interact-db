@@ -4,6 +4,7 @@ angular.module('interactDbApp')
   .factory('InteractDBDataService', function ($rootScope, $modal) {
 
     return {
+      version: 0,
 
       meta: {
         name: 'AwesomeProject',
@@ -15,31 +16,38 @@ angular.module('interactDbApp')
       models: [
         {
           name: 'User',
-          softDeletes: true,
-          timestamps: true,
 
-          database: {
-            tableName: 'users',
-            engine: 'InnoDB'
+          configuration: {
+            softDeletes: true,
+            timestamps: true,
+            engine: 'InnoDB',
+            primaryKey: ['id'],
+            indexes: {
+                unique: ['name'],
+                index: ['date_of_birth']
+            },
+            foreignKeys: [
+              {
+                column: "bio",
+                referenceModel: "new",
+                referenceColumn: "newCol"
+              }
+            ]
           },
-
-          relations: [
-            {
-              type: 'hasMany',
-              relatedModelIndex: 2
-            }
-          ],
 
           columns: [
             {
-              primaryKey: true,
-              autoIncrement: true,
               name: 'id',
-              dataType: 'bigInteger'
+              dataType: 'bigInteger',
+              allowNull: true,
+              unsigned: true,
+              length: ''
             },
             {
               name: 'name',
-              dataType: 'string'
+              dataType: 'string',
+              defaultVal: 'myName',
+              length: true
             },
             {
               name: 'date_of_birth',
@@ -50,6 +58,14 @@ angular.module('interactDbApp')
               dataType: 'longText'
             }
           ]
+        }
+      ],
+
+      relationships: [
+        {
+          model1: "User",
+          relation: "hasMany",
+          model2: ""
         }
       ]
 

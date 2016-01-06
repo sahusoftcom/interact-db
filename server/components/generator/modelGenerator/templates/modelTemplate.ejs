@@ -1,0 +1,86 @@
+<?php namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+<% if(configuration.softDeletes) { %>
+use \App\Traits\DeletedAtTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
+<% } %>
+
+class <%= name %> extends Model {
+
+	<% if(configuration.softDeletes) { %>
+	use SoftDeletes;
+
+	use DeletedAtTrait;
+	<% } %>
+
+	<% if(!configuration.timestamps) { %>
+	public $timestamps = false;
+	<% } %>
+
+	
+	/**
+	 * The database table used by the model.
+	 *
+	 * @var string
+	 */
+	protected $table = '<%= pluralize(name).toLowerCase() %>';
+
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = [ <%- columns.map(function(col){
+		return '\'' + col.name + '\' ';
+	}) %> ] ;
+
+	/**
+	 * The attributes excluded from the model's JSON form.
+	 *
+	 * @var array
+	 */
+	protected $hidden = [];
+
+	/**
+	 * The rules applicable on attributes.
+	 *
+	 * @var array
+	 */
+	protected $rules = [];
+
+	/**
+	 * Validation messages to show upon insert fail.
+	 *
+	 * @var array
+	 */
+	protected $validationMessages = [];
+
+	/**
+	 * Model Relationships
+	 */
+	<% if(relationshipArr) { %>
+	<% for(var i=0; i<relationshipArr.length; i++) { %>
+		<% if(relationshipArr[i].relation == 'hasOne' || relationshipArr[i].relation == 'belongsTo') { %>
+			public function <%= relationshipArr[i].withModel.toLowerCase() %>()
+		    {
+		        return $this-><%= relationshipArr[i].relation %>('App\Models\<%= relationshipArr[i].withModel %>');
+		    }
+		<% } %>
+		<% if(relationshipArr[i].relation == 'hasMany' || relationshipArr[i].relation == 'belongsToMany' || relationshipArr[i].relation == 'morphMany') { %>
+			public function <%= pluralize(relationshipArr[i].withModel).toLowerCase() %>()
+		    {
+		        return $this-><%= relationshipArr[i].relation %>('App\Models\<%= relationshipArr[i].withModel %>'<% if(relationshipArr[i].relation == 'morphMany' || relationshipArr[i].relation == 'morphToMany') { %>, '<%= relationshipArr[i].withModel.toLowerCase() + 'able' %>'<% } %>);
+		    }
+		<% } %>
+		<% if(relationshipArr[i].relation == 'morphTo') { %>
+			public function <%= name.toLowerCase() + 'able' %>()
+		    {
+		        return $this->morphTo();
+		    }
+		<% } %>
+	<% } %>
+	<% } %>
+}
+?>
