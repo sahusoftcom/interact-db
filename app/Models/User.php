@@ -55,9 +55,18 @@ class User extends Model {
 	
 		
 		
-			public function roles()
+			public function posts()
 		    {
-		        return $this->belongsToMany('App\Role');
+		        return $this->hasMany('App\Models\Post');
+		    }
+		
+		
+	
+		
+		
+			public function photos()
+		    {
+		        return $this->morphMany('App\Models\Photo', 'photoable');
 		    }
 		
 		

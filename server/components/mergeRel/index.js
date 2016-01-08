@@ -45,11 +45,11 @@ module.exports = function(newData) {
 		}
 	});
 
-	_.forEach(newData.relationships, function(relationshipArr, relModel) {
+	_.forEach(newData.relationships, function(relationshipArr, relModelName) {
 		var relIndex = 0;
 		_(relationshipArr).forEach(function(relationship) {
 			if(relationship.hidden) {
-				newData.relationships[relModel].splice(relIndex, 1);
+				newData.relationships[relModelName].splice(relIndex, 1);
 			}
 			else {
 				relIndex++;
@@ -60,21 +60,29 @@ module.exports = function(newData) {
 
 	var relationships = twoWayRel(newData.relationships);
 
-	_.forEach(relationships, function(relationshipArr, relModel) {
+	_.forEach(relationships, function(relationshipArr, relModelName) {
+		var relModel = _.find(newData.models, function(model) {
+			return model.name == relModelName;
+		});
+		
+		if(!relModel.migOrder)
+			relModel.migOrder = 0;
+
 		_(relationshipArr).forEach(function(relationship) {
 			var newId = uuid.parse(relationship.id);
 			newId[0]++;
 			newId = uuid.unparse(newId);
 
+			var withModel = _.find(newData.models, function(model) {
+				return model.name == relationship.withModel;
+			});
+
 			if(relationship.relation == 'hasOne' || relationship.relation == 'hasMany') {
-				var withModel = _.find(newData.models, function(model) {
-					return model.name == relationship.withModel;
-				});
 
 				withModel.columns.push(
 					{
 						id: relationship.id,
-						name: relModel.toLowerCase() + '_id',
+						name: relModelName.toLowerCase() + '_id',
 						dataType: 'bigInteger',
 						unsigned: true,
 						hidden: true
@@ -84,25 +92,29 @@ module.exports = function(newData) {
 				withModel.configuration.foreignKeys.push(
 					{
 						id: relationship.id,
-					    column: relModel.toLowerCase() + '_id',
-					    referenceModel: relModel,
+					    column: relModelName.toLowerCase() + '_id',
+					    referenceModel: relModelName,
 					    referenceColumn: 'id',
 					    hidden: true
 					}
 				);
+
+				withModel.migOrder = relModel.migOrder + 1;
+				console.log("hasOne", withModel.migOrder);
 			}
 
 			if(relationship.relation == 'belongsToMany') {
 				var manyToManyModel = _.find(newData.models, function(model) {
-					return model.name == getManyToManyTableName(relModel, relationship.withModel);
+					return model.name == getManyToManyTableName(relModelName, relationship.withModel);
 				});
 
 				if(!manyToManyModel) {
 					newData.models.push(
 						{
+							migOrder: _.max([withModel.migOrder, relModel.migOrder]) + 1,
 							hidden: true,
 							id: relationship.id,
-							name: getManyToManyTableName(relModel, relationship.withModel),
+							name: getManyToManyTableName(relModelName, relationship.withModel),
 							configuration: {
 					        	softDeletes: false,
 					            timestamps: false,
@@ -115,8 +127,8 @@ module.exports = function(newData) {
 					            foreignKeys: [
 					            	{
 					            		id: relationship.id,
-					            		column: relModel.toLowerCase() + '_id',
-					            		referenceModel: relModel,
+					            		column: relModelName.toLowerCase() + '_id',
+					            		referenceModel: relModelName,
 					            		referenceColumn: 'id',
 					            		hidden: true
 					            	},
@@ -132,7 +144,7 @@ module.exports = function(newData) {
 
 					        columns: [
 					        	{
-					        		name: relModel.toLowerCase() + '_id',
+					        		name: relModelName.toLowerCase() + '_id',
 					                dataType: 'bigInteger',
 					                unsigned: true,
 					                id: relationship.id,
@@ -152,9 +164,6 @@ module.exports = function(newData) {
 			}
 
 			if(relationship.relation == 'morphMany') {
-				var withModel = _.find(newData.models, function(model) {
-					return model.name == relationship.withModel;
-				});
 
 				var relColumns = _.find(withModel.columns, function(column) {
 					return column.name == relationship.withModel.toLowerCase() + 'able_id';

@@ -21,6 +21,7 @@ function capitalizeFirstLetter(str) {
 }
 
 var createMigration = function(type, migObject) {
+	console.log(migObject.migOrder);
 	if(migObject.hidden)
 		migObject.tableName = migObject.name;
 	else if(type == 'alter')
@@ -40,7 +41,7 @@ var createMigration = function(type, migObject) {
 		var date = new Date();
 		var migName = process.cwd() + '/database/migrations/' + date.getUTCFullYear() + '_' + zeroFill(date.getUTCMonth()+1, 2) 
 					+ '_' + zeroFill(date.getUTCDate(), 2) + '_' + zeroFill(date.getUTCHours(), 2) 
-					+ zeroFill(date.getUTCMinutes(), 2) + zeroFill(date.getUTCSeconds(), 2) + '_' + type + '_' 
+					+ zeroFill(date.getUTCMinutes(), 2) + zeroFill(date.getUTCSeconds()+migObject.migOrder, 2) + '_' + type + '_' 
 					+ migObject.tableName + '_table.php';
 
 		mkdirp(process.cwd() + '/database/migrations/', function(e) {
